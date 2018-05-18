@@ -12,7 +12,7 @@
   "author": "Jungle <devex.soft@gmail.com>",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/pyoner/vue-firebase-plugin.git"
   },
   "license": "MIT",
   "engines": {
