@@ -46,8 +46,8 @@ export function createRef({
 }: CreateRef) {
   const db = firebase.firestore()
   let colRef: CollectionReference | Query = db.collection(collection)
-  if (id && (<CollectionReference>colRef).doc) {
-    return (<CollectionReference>colRef).doc(id)
+  if (id && (colRef as CollectionReference).doc) {
+    return (colRef as CollectionReference).doc(id)
   }
 
   if (where) {
