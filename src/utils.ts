@@ -24,14 +24,14 @@ export type OrderBy = [string | FieldPath, OrderByDirection]
 export type StartEnd = DocumentSnapshot | any[]
 export type CreateRef = {
   collection: string
-  id: string
-  where: Where[]
-  orderBy: OrderBy[]
-  limit: number
-  startAt: StartEnd
-  startAfter: StartEnd
-  endAt: StartEnd
-  endBefore: StartEnd
+  id?: string
+  where?: Where[]
+  orderBy?: OrderBy[]
+  limit?: number
+  startAt?: StartEnd
+  startAfter?: StartEnd
+  endAt?: StartEnd
+  endBefore?: StartEnd
 }
 export function createRef({
   collection,
@@ -43,7 +43,7 @@ export function createRef({
   startAfter,
   endAt,
   endBefore
-}: CreateRef) {
+}: CreateRef): DocumentReference | CollectionReference | Query {
   const db = firebase.firestore()
   let colRef: CollectionReference | Query = db.collection(collection)
   if (id && (colRef as CollectionReference).doc) {
