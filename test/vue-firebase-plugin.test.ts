@@ -1,14 +1,10 @@
-import DummyClass from '../src/vue-firebase-plugin'
+import plugin from '../src/vue-firebase-plugin'
 
 /**
- * Dummy test
+ * plugin test
  */
-describe('Dummy test', () => {
-  it('works if true is truthy', () => {
-    expect(true).toBeTruthy()
-  })
-
-  it('DummyClass is instantiable', () => {
-    expect(new DummyClass()).toBeInstanceOf(DummyClass)
+describe('plugin test', () => {
+  it('is function', () => {
+    expect(plugin).toBeInstanceOf(Function)
   })
 })
