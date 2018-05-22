@@ -4,10 +4,9 @@
 import _Vue from 'vue'
 import firebase, { firestore } from 'firebase'
 import { FirebaseOptions } from '@firebase/app-types'
-import '@firebase/firestore'
 import { Settings, LogLevel } from '@firebase/firestore-types'
 
-export { default as Firestore } from './components/Firestore'
+import Firestore from './components/Firestore'
 
 export default function install(Vue: typeof _Vue, options: Options): void {
   const app = firebase.initializeApp(options.config)
@@ -26,7 +25,7 @@ export default function install(Vue: typeof _Vue, options: Options): void {
     }
 
     // register Firestore component as global component
-    // Vue.component(Firestore.name, Firestore);
+    Vue.component(Firestore.name, Firestore)
   }
 }
 
