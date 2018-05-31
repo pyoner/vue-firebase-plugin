@@ -1,27 +1,12 @@
-import firebase from 'firebase'
-import 'firebase/firestore'
+import firebase, { firestore } from 'firebase'
 
-import { User } from '@firebase/auth-types'
-import {
-  Timestamp,
-  GeoPoint,
-  DocumentReference,
-  CollectionReference,
-  DocumentSnapshot,
-  QuerySnapshot,
-  WhereFilterOp,
-  FieldPath,
-  OrderByDirection,
-  Query
-} from '@firebase/firestore-types'
-
-export function normalizeUser(user: User) {
+export function normalizeUser(user: firebase.User) {
   return user.toJSON()
 }
 
-export type Where = [string | FieldPath, WhereFilterOp, any]
-export type OrderBy = [string | FieldPath, OrderByDirection]
-export type StartEnd = DocumentSnapshot | any[]
+export type Where = [string | firestore.FieldPath, firestore.WhereFilterOp, any]
+export type OrderBy = [string | firestore.FieldPath, firestore.OrderByDirection]
+export type StartEnd = firestore.DocumentSnapshot | any[]
 export type CreateRef = {
   collection: string
   id?: string
@@ -43,11 +28,16 @@ export function createRef({
   startAfter,
   endAt,
   endBefore
-}: CreateRef): DocumentReference | CollectionReference | Query {
+}: CreateRef):
+  | firestore.DocumentReference
+  | firestore.CollectionReference
+  | firestore.Query {
   const db = firebase.firestore()
-  let colRef: CollectionReference | Query = db.collection(collection)
-  if (id && (colRef as CollectionReference).doc) {
-    return (colRef as CollectionReference).doc(id)
+  let colRef: firestore.CollectionReference | firestore.Query = db.collection(
+    collection
+  )
+  if (id && (colRef as firestore.CollectionReference).doc) {
+    return (colRef as firestore.CollectionReference).doc(id)
   }
 
   if (where) {
@@ -84,18 +74,18 @@ export function createRef({
 }
 
 export function normalizeField(value: any): any {
-  if (value instanceof Timestamp) {
+  if (value instanceof firestore.Timestamp) {
     return value.toDate()
   }
 
-  if (value instanceof GeoPoint) {
+  if (value instanceof firestore.GeoPoint) {
     return {
       latitude: value.latitude,
       longitude: value.longitude
     }
   }
 
-  if (value instanceof DocumentReference) {
+  if (value instanceof firestore.DocumentReference) {
     return {
       id: value.id,
       path: value.path,
@@ -103,7 +93,7 @@ export function normalizeField(value: any): any {
     }
   }
 
-  if (value instanceof CollectionReference) {
+  if (value instanceof firestore.CollectionReference) {
     return {
       id: value.id,
       path: value.path,
@@ -127,17 +117,21 @@ export function normalizeField(value: any): any {
   return value
 }
 
-export function normalizeDocumentSnapshot(snapshot: DocumentSnapshot) {
+export function normalizeDocumentSnapshot(
+  snapshot: firestore.DocumentSnapshot
+) {
   return {
     ...normalizeField(snapshot.data()),
     id: snapshot.id
   }
 }
 
-export function normalizeSnapshot(snapshot: DocumentSnapshot | QuerySnapshot) {
-  if (snapshot instanceof QuerySnapshot) {
+export function normalizeSnapshot(
+  snapshot: firestore.DocumentSnapshot | firestore.QuerySnapshot
+) {
+  if (snapshot instanceof firestore.QuerySnapshot) {
     return snapshot.docs.map(normalizeDocumentSnapshot)
-  } else if (snapshot instanceof DocumentSnapshot) {
+  } else if (snapshot instanceof firestore.DocumentSnapshot) {
     return normalizeDocumentSnapshot(snapshot)
   } else {
     throw new Error(`Not implemented normalization for snapshot: ${snapshot}`)

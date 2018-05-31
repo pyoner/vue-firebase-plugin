@@ -1,13 +1,7 @@
 import Vue, { CreateElement, VNode } from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
 
-import {
-  QuerySnapshot,
-  DocumentSnapshot,
-  DocumentReference,
-  CollectionReference,
-  Query
-} from '@firebase/firestore-types'
+import firebase, { firestore } from 'firebase/app'
 
 import {
   createRef,
@@ -20,9 +14,9 @@ import {
 
 interface Inner {
   unsubscribe?: () => void
-  snapFirst?: DocumentSnapshot
-  snapLast?: DocumentSnapshot
-  snapHistory: DocumentSnapshot[]
+  snapFirst?: firestore.DocumentSnapshot
+  snapLast?: firestore.DocumentSnapshot
+  snapHistory: firestore.DocumentSnapshot[]
 }
 
 @Component
@@ -47,8 +41,8 @@ export default class Firestore extends Vue {
   doc = null
   docs = []
   loading = true
-  nextCursor: DocumentSnapshot | null = null
-  prevCursor: DocumentSnapshot | null = null
+  nextCursor: firestore.DocumentSnapshot | null = null
+  prevCursor: firestore.DocumentSnapshot | null = null
 
   // not reactive
   private inner?: Inner
@@ -86,18 +80,22 @@ export default class Firestore extends Vue {
       const { collection, id, where, orderBy, limit } = this
       const params: CreateRef = { collection, id, where, orderBy, limit }
       const ref = createRef(params)
-      if (ref instanceof DocumentReference) {
-        this.inner.unsubscribe = ref.onSnapshot((snap: DocumentSnapshot) => {
-          vm.doc = normalizeSnapshot(snap)
-        })
-      } else {
-        this.inner.unsubscribe = ref.onSnapshot((snap: QuerySnapshot) => {
-          if (vm.inner) {
-            vm.inner.snapFirst = snap.docs[0]
-            vm.inner.snapLast = snap.docs[snap.docs.length - 1]
+      if (ref instanceof firestore.DocumentReference) {
+        this.inner.unsubscribe = ref.onSnapshot(
+          (snap: firestore.DocumentSnapshot) => {
+            vm.doc = normalizeSnapshot(snap)
           }
-          vm.docs = normalizeSnapshot(snap)
-        })
+        )
+      } else {
+        this.inner.unsubscribe = ref.onSnapshot(
+          (snap: firestore.QuerySnapshot) => {
+            if (vm.inner) {
+              vm.inner.snapFirst = snap.docs[0]
+              vm.inner.snapLast = snap.docs[snap.docs.length - 1]
+            }
+            vm.docs = normalizeSnapshot(snap)
+          }
+        )
       }
       console.log('Firestore subscribe')
     }

@@ -2,9 +2,7 @@
 // import "core-js/fn/array.find"
 // ..
 import _Vue from 'vue'
-import firebase, { firestore } from 'firebase'
-import { FirebaseOptions } from '@firebase/app-types'
-import { Settings, LogLevel } from '@firebase/firestore-types'
+import firebase from 'firebase'
 
 import Firestore from './components/Firestore'
 
@@ -30,9 +28,9 @@ export default function install(Vue: typeof _Vue, options: Options): void {
 }
 
 export interface Options {
-  config: FirebaseOptions
+  config: any
   firestore: {
-    settings?: Settings
-    logLevel?: LogLevel
+    settings?: firebase.firestore.Settings
+    logLevel?: firebase.firestore.LogLevel
   }
 }
