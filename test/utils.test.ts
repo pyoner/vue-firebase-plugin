@@ -5,8 +5,22 @@ import firebase, { firestore } from 'firebase'
  * utils test
  */
 describe('utils test', () => {
-  it('has normalizeUser', () => {
-    expect(utils).toHaveProperty('normalizeUser')
+  describe('normalizeUser', () => {
+    it('should be instance of function', () => {
+      expect(utils.normalizeUser).toBeInstanceOf(Function)
+    })
+  })
+
+  describe('normalizeDocumentSnapshot', () => {
+    it('should be instance of function', () => {
+      expect(utils.normalizeDocumentSnapshot).toBeInstanceOf(Function)
+    })
+  })
+
+  describe('normalizeSnapshot', () => {
+    it('should be instance of function', () => {
+      expect(utils.normalizeSnapshot).toBeInstanceOf(Function)
+    })
   })
 
   describe('createRef', () => {
