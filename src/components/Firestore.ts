@@ -1,7 +1,7 @@
 import Vue, { CreateElement, VNode } from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
 
-import firebase, { firestore } from 'firebase/app'
+import firebase, { firestore } from 'firebase'
 
 import {
   createRef,
