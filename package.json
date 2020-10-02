@@ -115,7 +115,7 @@
     "validate-commit-msg": "^2.12.2"
   },
   "dependencies": {
-    "firebase": "^5.0.3",
+    "firebase": "^7.22.0",
     "vue": "^2.5.16",
     "vue-class-component": "^6.2.0",
     "vue-property-decorator": "^6.0.0"
